@@ -4,18 +4,16 @@
 #include "ThreadingPractice.h"
 
 
-void ThreadFunc() {
-	std::cout << "Hilo secundario" << std::endl;
-
-}
-
 int main()
 {
+	std::mutex customerMutex;
 	std::cout << "Hilo principal" << std::endl;
-	std::thread worker(ThreadFunc);
-	worker.join();
-	Customer customer1("Felipe");
+	Customer customer1("Felipe", customerMutex);
+	Customer customer2("Claudia", customerMutex);
+	Customer customer3("Oscar", customerMutex);
 
 	customer1.getThread().join();
+	customer2.getThread().join();
+	customer3.getThread().join();
 	return 0;
 }

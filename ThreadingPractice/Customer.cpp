@@ -1,6 +1,10 @@
 #include "Customer.h"
 
-Customer::Customer(const std::string& name, std::mutex& m):name(name), customerMutex(m) {
+int Customer::globalId = 0;
+
+Customer::Customer(std::mutex& m):customerMutex(m) {
+	this->id = globalId;
+	globalId++;
 	this->customerTh = std::thread(&Customer::customerProc, this);
 }
 
@@ -13,7 +17,7 @@ void Customer::customerProc() {
 
 	while (true) {
 		customerMutex.lock();
-		std::cout << this->name << " is running"<<std::endl;
+		std::cout << this->id << " is running"<<std::endl;
 		customerMutex.unlock();
 		std::this_thread::sleep_for(1s);
 	}

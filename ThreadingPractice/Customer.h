@@ -9,12 +9,16 @@ class Customer {
 	
 
 private:
-	std::string name;
 	std::thread customerTh;
 	std::mutex& customerMutex;
+	static int globalId;
+	int id;
+
 	void customerProc(void);
 
 public:
+	
+
 	std::thread& getThread();
-	Customer(const std::string& name, std::mutex& m);
+	Customer(std::mutex& m);
 };

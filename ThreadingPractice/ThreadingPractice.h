@@ -7,6 +7,7 @@
 #include <mutex>
 #include <thread>
 #include <semaphore>
+#include <vector>
 #include "Customer.h"
 #include "Barber.h"
 #include "WaitingSeat.h"

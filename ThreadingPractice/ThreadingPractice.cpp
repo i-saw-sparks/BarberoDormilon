@@ -6,14 +6,17 @@
 
 int main()
 {
-	std::mutex customerMutex;
-	std::cout << "Hilo principal" << std::endl;
-	Customer customer1("Felipe", customerMutex);
-	Customer customer2("Claudia", customerMutex);
-	Customer customer3("Oscar", customerMutex);
+	using namespace std::literals::chrono_literals;
 
-	customer1.getThread().join();
-	customer2.getThread().join();
-	customer3.getThread().join();
+	std::mutex customerMutex;
+	std::vector <Customer*> customerPool;
+
+	std::cout << "Hilo principal" << std::endl;
+
+	while (true) {
+		customerPool.push_back(new Customer(customerMutex));
+
+		std::this_thread::sleep_for(2s);
+	}
 	return 0;
 }

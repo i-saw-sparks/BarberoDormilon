@@ -11,3 +11,5 @@
 #include "Customer.h"
 #include "Barber.h"
 #include "WaitingSeat.h"
+#include <algorithm> 
+#include <queue>

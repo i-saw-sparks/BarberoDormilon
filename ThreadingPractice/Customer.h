@@ -4,13 +4,22 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <semaphore>
+#include <queue>
 
 class Customer {
 	
 
 private:
 	std::thread customerTh;
-	std::mutex& customerMutex;
+	std::binary_semaphore& barberSem;
+	std::mutex& seatsQMutex;
+	std::counting_semaphore<1>& customersSm;
+	std::mutex& coutMutex;
+	std::queue<Customer*>& customersQue;
+
+	int& sillasLibres;
+
 	static int globalId;
 	int id;
 
@@ -18,7 +27,8 @@ private:
 
 public:
 	
-
+	bool isOut;
 	std::thread& getThread();
-	Customer(std::mutex& m);
+	int getId();
+	Customer(std::binary_semaphore&, std::mutex&, std::mutex&, std::counting_semaphore<1>&, int&, std::queue<Customer*>&);
 };

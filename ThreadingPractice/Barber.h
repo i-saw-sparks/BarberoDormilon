@@ -5,6 +5,7 @@
 #include <semaphore>
 #include <iostream>
 #include <queue>
+#include <random>
 #include "Customer.h"
 
 class Barber {

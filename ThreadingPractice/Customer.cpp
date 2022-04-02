@@ -24,25 +24,30 @@ void Customer::customerProc() {
 	using namespace std::literals::chrono_literals;
 
 	seatsQMutex.lock();       // Espera la señal para poder acceder a sillasLibres.
-	if (sillasLibres > 0)        // Si hay alguna silla libre, se sienta en una.
+	if (sillasLibres > 0)        
 	{
-		sillasLibres -= 1;         // Decrementando el valor de sillasLibres en 1.
+		sillasLibres -= 1;         
 		customersQue.push(this);
 
-		customersSm.release(); // Manda señal al barbero de que hay un cliente disponible.
-		seatsQMutex.unlock();// Manda señal para desbloquear el acceso a sillasLibres.
+		
+		customersSm.release();
+		
 		coutMutex.lock();
-		std::cout << "El cliente " << id << " esta esperando al barbero" << std::endl;
+		std::cout << "El cliente " << id << " esta esperando al barbero\t\t\t\tCantidad de sillas libres: " <<sillasLibres<< std::endl;
 		coutMutex.unlock();
+		seatsQMutex.unlock();
 
 		// Se le corta el pelo al cliente.
-		do {
-			barberSem.acquire();
-		} while (customersQue.front() != this);
-
+		bool isMe = false;
+		
+		while (customersQue.front() != this);
+		
+		barberSem.acquire();
 		coutMutex.lock();
-		std::cout << "El cliente " << id << " se esta cortando el pelo" << std::endl;
+		std::cout << "El cliente " << id << " termino de cortarse el pelo y sale de la peluqueria" << std::endl << std::endl;
 		coutMutex.unlock();
+
+		
 	}
 	else                         // Si no hay sillas libres.
 	{
@@ -51,9 +56,8 @@ void Customer::customerProc() {
 		std::cout << "El cliente " << id << " salio de la peluqueria porque no hay espacio" << std::endl;
 		coutMutex.unlock();
 		// Manda señal para desbloquear el acceso a sillasLibres.
-		// El cliente se va de la barbería y no manda la señal de cliente disponible.	
+
 	}
-	//isOut = true;
 }
 
 int Customer::getId() {
